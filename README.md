@@ -21,35 +21,58 @@
 <tr>
 <td width="50%">
 
-### 🤖 **AI-Powered**
-- Google Gemini AI generates unique problems
-- Personalized feedback for every answer
+### 🤖 **AI-Powered Generation**
+- Google Gemini 2.0 Flash generates unique problems
+- Personalized, encouraging feedback
 - Singapore Math syllabus aligned
+- Context-aware problem generation
 
 </td>
 <td width="50%">
 
-### 📱 **User Experience**
-- Mobile-first responsive design
-- Confetti celebrations 🎉
-- Smooth animations throughout
+### 🎯 **Three Difficulty Levels**
+- **🌱 Easy:** Basic operations (fractions, decimals)
+- **⭐ Medium:** Multi-step problems (rate, ratio)  
+- **🔥 Hard:** Complex word problems (volume, speed)
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### ✅ **Smart Features**
-- Instant answer validation
-- Decimal tolerance handling
-- Clear error messages
+### 💡 **Progressive Hints System**
+- 3 AI-generated hints per problem
+- Guides without revealing the answer
+- Tracks hint usage in database
+- Helps students learn problem-solving
 
 </td>
 <td width="50%">
 
-### ♿ **Accessible**
-- ARIA labels & keyboard navigation
-- Screen reader support
+### 📊 **Answer History**
+- View all previous attempts
+- Track correctness over time
+- See hints used per submission
+- Visual indicators for correct/incorrect
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📱 **Exceptional UX**
+- Mobile-first responsive design
+- Confetti celebrations 🎉 for correct answers
+- Smooth animations & transitions
+- Loading states & error handling
+
+</td>
+<td width="50%">
+
+### ♿ **Accessibility First**
+- ARIA labels & semantic HTML
+- Keyboard navigation support
+- Screen reader compatible
 - Focus management
 
 </td>
@@ -58,7 +81,7 @@
 
 ### 📚 **Syllabus Coverage**
 
-Primary 5 topics include: **Fractions** • **Decimals** • **Percentages** • **Rate** • **Ratio** • **Volume** • **Area**
+**Primary 5 topics:** Fractions • Decimals • Percentages • Rate • Ratio • Volume • Area • Perimeter • Speed • Distance • Time
 
 ---
 
@@ -78,15 +101,19 @@ Primary 5 topics include: **Fractions** • **Decimals** • **Percentages** •
 </tr>
 <tr>
 <td><strong>Backend</strong></td>
-<td>Next.js API Routes • Google Gemini AI (<code>gemini-2.0-flash</code>)</td>
+<td>Next.js API Routes • Google Gemini AI (<code>gemini-2.0-flash-exp</code>)</td>
 </tr>
 <tr>
 <td><strong>Database</strong></td>
-<td>Supabase (PostgreSQL with Row Level Security)</td>
+<td>Supabase (PostgreSQL) • Row Level Security</td>
 </tr>
 <tr>
 <td><strong>Deployment</strong></td>
-<td>Vercel</td>
+<td>Vercel (Edge Runtime)</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Node.js Test Scripts • Manual QA</td>
 </tr>
 </tbody>
 </table>
@@ -103,7 +130,7 @@ Supabase Project URL: https://jrqncyjyykychdjitvxy.supabase.co
 Supabase Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpycW5jeWp5eWt5Y2hkaml0dnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MjM1MzIsImV4cCI6MjA3NjI5OTUzMn0.4xVeUS2zq-08Z-I9qWCV1YXORa-iZXSW97YUjA4J1X4
 ```
 
-⚠️ **Note:** These credentials enable read/write access to the demo database. In production, more restrictive policies would be implemented.
+⚠️ **Note:** These credentials enable read/write access to the demo database. In production, more restrictive RLS policies would be implemented.
 
 ---
 
@@ -133,27 +160,29 @@ npm install
 
 #### 3️⃣ Set Up Supabase
 
-- Create a project at [supabase.com](https://supabase.com)
-- Run `database.sql` in SQL Editor
-- Copy Project URL and Anon Key from **Settings → API**
+1. Create a project at [supabase.com](https://supabase.com)
+2. Navigate to **SQL Editor**
+3. Run `database.sql` to create tables
+4. Copy **Project URL** and **Anon Key** from **Settings → API**
 
 #### 4️⃣ Get Google Gemini API Key
 
-- Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-- Create and copy API key
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Click **Get API Key**
+3. Create and copy your key
 
 #### 5️⃣ Configure Environment Variables
 
 ```bash
 cp .env.local.example .env.local
-# Edit .env.local with your credentials
 ```
 
-**.env.local** should contain:
+Edit `.env.local` with your credentials:
+
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-GOOGLE_API_KEY=your_google_api_key
+GOOGLE_API_KEY=your_google_gemini_api_key
 ```
 
 #### 6️⃣ Run Development Server
@@ -170,29 +199,75 @@ Navigate to: **http://localhost:3000**
 
 ## 🧪 Testing
 
-### Manual Testing
+### Manual Testing (Browser)
 
 ```bash
 npm run dev
-# Test in browser: http://localhost:3000
+# Open http://localhost:3000
 ```
 
-### API Testing
+**Test checklist:**
+- ✅ Generate problems across all difficulty levels
+- ✅ Submit correct and incorrect answers
+- ✅ Use hint system (3 hints per problem)
+- ✅ View answer history
+- ✅ Test mobile responsiveness
+- ✅ Verify confetti animation on correct answers
 
+### Automated API Testing
+
+Six comprehensive test scripts are provided in the `/tests` folder:
+
+#### **Quick Test: All Difficulties**
 ```bash
-# Test problem generation
-node test-generate.js
+node tests/test-all-difficulties.js
+```
+Generates one problem per difficulty level.
 
-# Test complete flow
-node test-submit.js
-
-# Test single submission
-node test-submit-simple.js <sessionId> <answer>
+#### **Test Generate API**
+```bash
+node tests/test-generate.js [difficulty]
+# Examples:
+node tests/test-generate.js easy
+node tests/test-generate.js medium
+node tests/test-generate.js hard
 ```
 
-### Database Cleanup
+#### **Test Complete Flow**
+```bash
+node tests/test-submit.js
+```
+Tests generate + submit flow with retry logic for all difficulty levels.
 
-Run `cleanup-database.sql` in Supabase SQL Editor to reset all data while preserving table structure.
+#### **Test Sequential (Reliable)**
+```bash
+node tests/test-submit-sequential.js
+```
+Slower but more reliable testing with 5-second delays (avoids rate limiting).
+
+#### **Test Single Submission**
+```bash
+node tests/test-submit-simple.js <sessionId> <answer>
+# Example:
+node tests/test-submit-simple.js "abc-123-def-456" 42
+```
+
+#### **Test Hints & History**
+Test these features manually in the browser UI.
+
+### Database Verification
+
+**View data in Supabase:**
+1. Open Supabase Dashboard → Table Editor
+2. Check `math_problem_sessions` for generated problems
+3. Check `math_problem_submissions` for answer submissions
+4. Verify `difficulty` and `hints_used` columns are populated
+
+**Clean database (reset data):**
+```bash
+# Run cleanup-database.sql in Supabase SQL Editor
+```
+This removes all data while preserving table structure.
 
 ---
 
@@ -205,20 +280,31 @@ math-problem-generator/
 │   ├── api/
 │   │   └── math-problem/
 │   │       ├── generate/
-│   │       │   └── route.ts          # 🤖 Problem generation
+│   │       │   └── route.ts          # 🤖 Problem generation + hints
 │   │       └── submit/
-│   │           └── route.ts          # ✅ Answer validation
-│   ├── page.tsx                      # 🎨 Main UI
+│   │           └── route.ts          # ✅ Answer validation + feedback
+│   ├── page.tsx                      # 🎨 Main UI (difficulty, hints, history)
+│   ├── layout.tsx                    # 📐 Root layout
 │   └── globals.css                   # 💅 Styles + animations
 │
 ├── lib/
-│   ├── gemini.ts                     # 🧠 AI client
+│   ├── gemini.ts                     # 🧠 AI client configuration
 │   └── supabaseClient.ts             # 💾 Database client
 │
-├── database.sql                      # 📊 Schema (initial setup)
+├── migrations/                       # 🔄 Database migrations
+│
+├── tests/                            # 🧪 API test scripts (6 files)
+│   ├── test-all-difficulties.js
+│   ├── test-generate.js
+│   ├── test-submit.js
+│   ├── test-submit-sequential.js
+│   └── test-submit-simple.js
+│
+├── database.sql                      # 📊 Initial schema setup
 ├── cleanup-database.sql              # 🧹 Data cleanup script
-├── test-*.js                         # 🧪 API test scripts
-└── .env.local.example                # 🔐 Environment template
+├── .env.local.example                # 🔐 Environment template
+├── LICENSE                           # 📄 MIT License
+└── README.md                         # 📖 This file
 ```
 
 ---
@@ -227,14 +313,16 @@ math-problem-generator/
 
 ### Quick Deploy
 
-1. **Push to GitHub**
-2. **Import repository** in Vercel
+1. **Push to GitHub** (ensure `.env.local` is gitignored)
+2. **Import repository** at [vercel.com](https://vercel.com)
 3. **Configure environment variables:**
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `GOOGLE_API_KEY`
-4. **Deploy**
-5. **Update demo URL** in README
+   ```
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_ANON_KEY
+   GOOGLE_API_KEY
+   ```
+4. **Deploy** (Vercel auto-detects Next.js)
+5. **Test production** deployment
 
 ### Deployment URL
 
@@ -254,13 +342,46 @@ math-problem-generator/
 
 </div>
 
-### 💼 Experience Highlights
+### 💼 Relevant Experience
 
-| Project | Description |
-|---------|-------------|
-| **RataTutor** | AI-powered study assistant with context management |
-| **Blockchain Explorer** | Real-time analytics, 42+ tests, 8-10x optimization |
-| **ChatGenie** | Rapid full-stack development (3-day cycles) |
+| Project | Key Achievements | Relevance to This Project |
+|---------|------------------|---------------------------|
+| **RataTutor** | AI-powered study assistant with context management, multi-format file processing, flashcard/quiz generation | Direct AI integration experience, educational technology focus |
+| **Blockchain Explorer** | Real-time analytics dashboard, 42+ automated tests, 8-10x cache optimization | Production-quality error handling, comprehensive testing, performance optimization |
+| **ChatGenie** | Built complete full-stack applications in 3-day cycles (Vue.js + Ruby on Rails) | Rapid full-stack delivery under time pressure while maintaining quality |
+
+**Skills Demonstrated in This Project:**
+- ✅ Next.js 14 App Router with TypeScript
+- ✅ AI integration (Google Gemini API) with prompt engineering
+- ✅ Database design (PostgreSQL via Supabase)
+- ✅ RESTful API development
+- ✅ Mobile-first responsive design
+- ✅ Production-ready error handling
+- ✅ Systematic testing approach
+
+---
+
+## 💡 Implementation Highlights
+
+### AI Prompt Engineering
+- **Problem Generation:** Structured prompts ensure Singapore Math alignment and age-appropriate language
+- **Hints System:** Progressive hints that guide without revealing answers
+- **Feedback Generation:** Context-aware, encouraging feedback tailored to student's answer
+
+### Database Design
+- **Sessions Table:** Stores problems with difficulty and hints
+- **Submissions Table:** Tracks answers with correctness and hints used
+- **Foreign Key Relationships:** Ensures data integrity
+
+### Error Handling
+- **Retry Logic:** Automatic retries for transient API failures
+- **User Feedback:** Clear error messages for all failure scenarios
+- **Graceful Degradation:** Application remains functional during partial failures
+
+### Performance Optimizations
+- **Lazy Loading:** Components load on-demand
+- **Optimistic UI:** Instant feedback before API confirmation
+- **Edge Runtime:** Fast response times via Vercel Edge
 
 ---
 
@@ -277,19 +398,29 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <br>
 
-**Timeline:** ~15 hours over 3 days  
 **Date:** October 2025
 
-### Requirements Met ✅
+### Core Requirements ✅
 
-- ✅ Next.js 14 + TypeScript + Tailwind CSS
-- ✅ Google Gemini AI integration (generation + feedback)
-- ✅ Supabase database with proper schema
-- ✅ Mobile-responsive UI
+- ✅ Next.js 14 with App Router
+- ✅ TypeScript (strict mode)
+- ✅ Tailwind CSS styling
+- ✅ Google Gemini AI integration
+- ✅ Supabase database with RLS
+- ✅ Mobile-responsive design
 - ✅ Complete user flow tested
 - ✅ Production-ready error handling
 - ✅ Public GitHub repository
 - ✅ Vercel deployment
+
+### Optional Enhancements Implemented ✅
+
+- ✅ **Difficulty Levels:** Three tiers (easy/medium/hard)
+- ✅ **Hints System:** Progressive AI-generated hints
+- ✅ **Answer History:** Track all submissions
+- ✅ **Enhanced UX:** Confetti, animations, accessibility
+- ✅ **Comprehensive Testing:** 6 test scripts + manual QA
+- ✅ **Database Migrations:** Systematic schema management
 
 </details>
 
@@ -299,6 +430,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Built with ❤️ for Singapore Primary 5 students**
 
-⭐ Star this repo if you found it helpful!
+⭐ **Star this repo if you found it helpful!**
 
 </div>
