@@ -9,7 +9,7 @@ An AI-powered math word problem generator for Primary 5 students (ages 10-11) al
 
 ## 🚀 Live Demo
 
-**[View Live Application →](#)** *(Will be updated after Vercel deployment)*
+**[View Live Application →](https://math-problem-generator-one.vercel.app/)**
 
 ---
 
