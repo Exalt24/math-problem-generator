@@ -1,160 +1,197 @@
-# Math Problem Generator - Developer Assessment Starter Kit
+# 🎓 AI Math Problem Generator
 
-## Overview
+An AI-powered math word problem generator for Primary 5 students (ages 10-11) aligned with Singapore's Mathematics syllabus. Built for Ottodot's Full Stack Developer Assessment.
 
-This is a starter kit for building an AI-powered math problem generator application. The goal is to create a standalone prototype that uses AI to generate math word problems suitable for Primary 5 students, saves the problems and user submissions to a database, and provides personalized feedback.
+[![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.18-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Tech Stack
+## 🚀 Live Demo
 
-- **Frontend Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: Supabase
-- **AI Integration**: Google Generative AI (Gemini)
-
-## Setup Instructions
-
-### 1. Clone the Repository
-
-```bash
-git clone <your-repo-url>
-cd math-problem-generator
-```
-
-### 2. Create a Supabase Project
-
-1. Go to [https://supabase.com](https://supabase.com) and create a free account
-2. Create a new project
-3. Go to Settings → API to find your:
-   - Project URL (starts with `https://`)
-   - Anon/Public Key
-
-### 3. Set Up Database Tables
-
-1. In your Supabase dashboard, go to SQL Editor
-2. Copy and paste the contents of `database.sql`
-3. Click "Run" to create the tables and policies
-
-### 4. Get Google API Key
-
-1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key for Gemini
-
-### 5. Configure Environment Variables
-
-1. Copy `.env.local.example` to `.env.local`:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-2. Edit `.env.local` and add your actual keys:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_actual_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_supabase_anon_key
-   GOOGLE_API_KEY=your_actual_google_api_key
-   ```
-
-### 6. Install Dependencies
-
-```bash
-npm install
-```
-
-### 7. Run the Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Your Task
-
-### 1. Implement Frontend Logic (`app/page.tsx`)
-
-Complete the TODO sections in the main page component:
-
-- **generateProblem**: Call your API route to generate a new math problem
-- **submitAnswer**: Submit the user's answer and get feedback
-
-### 2. Create Backend API Route (`app/api/math-problem/route.ts`)
-
-Create a new API route that handles:
-
-#### POST /api/math-problem (Generate Problem)
-- Use Google's Gemini AI to generate a math word problem
-- The AI should return JSON with:
-  ```json
-  {
-    "problem_text": "A bakery sold 45 cupcakes...",
-    "final_answer": 15
-  }
-  ```
-- Save the problem to `math_problem_sessions` table
-- Return the problem and session ID to the frontend
-
-#### POST /api/math-problem/submit (Submit Answer)
-- Receive the session ID and user's answer
-- Check if the answer is correct
-- Use AI to generate personalized feedback based on:
-  - The original problem
-  - The correct answer
-  - The user's answer
-  - Whether they got it right or wrong
-- Save the submission to `math_problem_submissions` table
-- Return the feedback and correctness to the frontend
-
-### 3. Requirements Checklist
-
-- [ ] AI generates appropriate Primary 5 level math problems
-- [ ] Problems and answers are saved to Supabase
-- [ ] User submissions are saved with feedback
-- [ ] AI generates helpful, personalized feedback
-- [ ] UI is clean and mobile-responsive
-- [ ] Error handling for API failures
-- [ ] Loading states during API calls
-
-## Deployment
-
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com) and import your repository
-3. Add your environment variables in Vercel's project settings
-4. Deploy!
-
-## Assessment Submission
-
-When submitting your assessment, provide:
-
-1. **GitHub Repository URL**: Make sure it's public
-2. **Live Demo URL**: Your Vercel deployment
-3. **Supabase Credentials**: Add these to your README for testing:
-   ```
-   SUPABASE_URL: [Your Supabase Project URL]
-   SUPABASE_ANON_KEY: [Your Supabase Anon Key]
-   ```
-
-## Implementation Notes
-
-*Please fill in this section with any important notes about your implementation, design decisions, challenges faced, or features you're particularly proud of.*
-
-### My Implementation:
-
-- 
-- 
-- 
-
-## Additional Features (Optional)
-
-If you have time, consider adding:
-
-- [ ] Difficulty levels (Easy/Medium/Hard)
-- [ ] Problem history view
-- [ ] Score tracking
-- [ ] Different problem types (addition, subtraction, multiplication, division)
-- [ ] Hints system
-- [ ] Step-by-step solution explanations
+**[View Live Application →](#)** *(Will be updated after Vercel deployment)*
 
 ---
 
-Good luck with your assessment! 🎯
+## ✨ Features
+
+- **🤖 AI-Powered Generation** - Google Gemini AI creates unique, age-appropriate math word problems
+- **📝 Instant Feedback** - Personalized, encouraging feedback for every answer
+- **✅ Smart Validation** - Accurate answer checking with decimal tolerance
+- **💾 Database Persistence** - All problems and submissions saved to Supabase
+- **🎯 Singapore Math Aligned** - Covers Primary 5 syllabus topics (fractions, decimals, percentages, rate, ratio, volume, area)
+- **🎉 Engaging UX** - Confetti celebrations, smooth animations, kid-friendly design
+- **📱 Mobile-First** - Fully responsive across all devices
+- **♿ Accessible** - ARIA labels, keyboard navigation, screen reader support
+
+---
+
+## 🛠️ Technology Stack
+
+**Frontend:** Next.js 14 (App Router) • TypeScript • Tailwind CSS • Canvas Confetti  
+**Backend:** Next.js API Routes • Google Gemini AI (`gemini-2.0-flash`)  
+**Database:** Supabase (PostgreSQL with Row Level Security)  
+**Deployment:** Vercel
+
+---
+
+## 🧪 Testing Credentials
+
+**For assessment and testing purposes only:**
+
+```
+Supabase Project URL: https://jrqncyjyykychdjitvxy.supabase.co
+Supabase Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpycW5jeWp5eWt5Y2hkaml0dnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MjM1MzIsImV4cCI6MjA3NjI5OTUzMn0.4xVeUS2zq-08Z-I9qWCV1YXORa-iZXSW97YUjA4J1X4
+```
+
+> **Note:** These credentials enable read/write access to the demo database. In production, more restrictive policies would be implemented.
+
+---
+
+## 📦 Local Setup
+
+### Prerequisites
+- Node.js 20.x or higher
+- npm 10.x or higher
+- A Supabase account (free tier)
+- A Google AI Studio API key (free tier)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Exalt24/math-problem-generator.git
+   cd math-problem-generator
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up Supabase**
+   - Create a project at [supabase.com](https://supabase.com)
+   - Run `database.sql` in SQL Editor
+   - Copy Project URL and Anon Key from Settings → API
+
+4. **Get Google Gemini API key**
+   - Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Create and copy API key
+
+5. **Configure environment variables**
+   ```bash
+   cp .env.local.example .env.local
+   # Edit .env.local with your credentials
+   ```
+
+6. **Run development server**
+   ```bash
+   npm run dev
+   ```
+
+7. **Open browser**
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## 🧪 Testing
+
+### Manual Testing
+```bash
+npm run dev
+# Test in browser: http://localhost:3000
+```
+
+### API Testing
+```bash
+# Test problem generation
+node test-generate.js
+
+# Test complete flow
+node test-submit.js
+
+# Test single submission
+node test-submit-simple.js <sessionId> <answer>
+```
+
+### Database Cleanup
+Run `cleanup-database.sql` in Supabase SQL Editor to reset all data while preserving table structure.
+
+---
+
+## 📁 Project Structure
+
+```
+math-problem-generator/
+├── app/
+│   ├── api/math-problem/
+│   │   ├── generate/route.ts     # Problem generation
+│   │   └── submit/route.ts       # Answer validation
+│   ├── page.tsx                  # Main UI
+│   └── globals.css               # Styles + animations
+├── lib/
+│   ├── gemini.ts                 # AI client
+│   └── supabaseClient.ts         # Database client
+├── database.sql                  # Schema (initial setup)
+├── cleanup-database.sql          # Data cleanup script
+├── test-*.js                     # API test scripts
+└── .env.local.example            # Environment template
+```
+
+---
+
+## 🚀 Deployment to Vercel
+
+1. Push to GitHub
+2. Import repository in Vercel
+3. Configure environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `GOOGLE_API_KEY`
+4. Deploy
+5. Update demo URL in README
+
+---
+
+## 👨‍💻 Developer
+
+**Daniel Alexis Cruz**  
+Full Stack Developer
+
+[![GitHub](https://img.shields.io/badge/GitHub-Exalt24-181717?style=flat&logo=github)](https://github.com/Exalt24)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-dacruz24-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/dacruz24)
+
+### Experience Highlights
+- **RataTutor** - AI-powered study assistant with context management
+- **Blockchain Explorer** - Real-time analytics, 42+ tests, 8-10x optimization
+- **ChatGenie** - Rapid full-stack development (3-day cycles)
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+## 📝 Assessment Notes
+
+**Built for:** Ottodot Full Stack Developer Assessment  
+**Timeline:** ~15 hours over 3 days  
+**Date:** October 2025
+
+**Requirements Met:**
+- ✅ Next.js 14 + TypeScript + Tailwind CSS
+- ✅ Google Gemini AI integration (generation + feedback)
+- ✅ Supabase database with proper schema
+- ✅ Mobile-responsive UI
+- ✅ Complete user flow tested
+- ✅ Production-ready error handling
+- ✅ Public GitHub repository
+- ✅ Vercel deployment (pending)
+
+---
+
+**Built with ❤️ for Singapore Primary 5 students**
