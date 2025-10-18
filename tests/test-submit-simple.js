@@ -1,5 +1,5 @@
 // Simple test for submit endpoint only
-// Save as: test-submit-simple.js
+// Ensure you are in tests/ directory
 // Usage: node test-submit-simple.js <sessionId> <answer>
 // Example: node test-submit-simple.js "abc-123-def" 42
 
@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 if (args.length < 2) {
   console.log('Usage: node test-submit-simple.js <sessionId> <answer>');
   console.log('Example: node test-submit-simple.js "your-session-id" 42');
-  console.log('\nTo get a sessionId, first run: node test-generate.js');
+  console.log('\n💡 To get a sessionId, first run: node test-generate.js');
   process.exit(1);
 }
 
@@ -21,7 +21,7 @@ if (isNaN(userAnswer)) {
 }
 
 async function testSubmit() {
-  console.log('Testing /api/math-problem/submit endpoint...\n');
+  console.log('=== TESTING SUBMIT API ===\n');
   console.log('Session ID:', sessionId);
   console.log('User Answer:', userAnswer);
   console.log('');
@@ -41,12 +41,15 @@ async function testSubmit() {
     console.log('');
 
     const data = await response.json();
-    
+   
     if (response.ok) {
       console.log('✅ SUCCESS!\n');
       console.log('Is Correct:', data.isCorrect ? '✅ YES' : '❌ NO');
       console.log('Correct Answer:', data.correctAnswer);
-      console.log('Feedback:', data.feedback);
+      console.log('\nFeedback:');
+      console.log('─'.repeat(60));
+      console.log(data.feedback);
+      console.log('─'.repeat(60));
       console.log('\n✅ Submission saved to database successfully!');
     } else {
       console.log('❌ ERROR:\n');
