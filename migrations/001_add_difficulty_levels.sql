@@ -1,7 +1,3 @@
--- Migration: Add difficulty levels feature
--- Created: 2025-10-18
--- Description: Adds difficulty column to math_problem_sessions table
-
 -- Add difficulty column
 ALTER TABLE math_problem_sessions 
 ADD COLUMN IF NOT EXISTS difficulty TEXT DEFAULT 'medium';
