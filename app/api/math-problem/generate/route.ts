@@ -7,7 +7,7 @@ interface GeneratedProblem {
   correct_answer: number;
   solution_steps: string;
   problem_type: ProblemType;
-  hints: string[]; // ⭐ NEW: Three progressive hints
+  hints: string[];
 }
 
 function cleanAIResponse(text: string): string {
@@ -17,7 +17,6 @@ function cleanAIResponse(text: string): string {
     .trim();
 }
 
-// Difficulty-specific instructions
 const DIFFICULTY_INSTRUCTIONS = {
   easy: `
 DIFFICULTY: EASY (Foundational Level)
@@ -189,7 +188,6 @@ Generate a NEW, DIFFERENT problem with FULL SOLUTION, CATEGORY, and THREE PROGRE
   
   const problemData = JSON.parse(cleanedText);
   
-  // ⭐ UPDATED: Validate hints exist and have exactly 3 items
   if (!problemData.problem_text || 
       typeof problemData.correct_answer !== 'number' ||
       !problemData.solution_steps ||
@@ -199,7 +197,6 @@ Generate a NEW, DIFFERENT problem with FULL SOLUTION, CATEGORY, and THREE PROGRE
     throw new Error('Invalid AI response structure - missing required fields or invalid hints');
   }
   
-  // ⭐ UPDATED: Return with hints
   return {
     problem_text: problemData.problem_text,
     correct_answer: problemData.correct_answer,
@@ -223,7 +220,6 @@ export async function POST(request: NextRequest) {
     
     const problemData = await generateMathProblem(difficulty as 'easy' | 'medium' | 'hard');
     
-    // ⭐ UPDATED: Include hints in database insert
     const { data, error } = await supabase
       .from('math_problem_sessions')
       .insert({
@@ -245,7 +241,6 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // ⭐ UPDATED: Return hints in response
     return NextResponse.json({
       sessionId: data.id,
       problemText: data.problem_text,

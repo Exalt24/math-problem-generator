@@ -23,6 +23,10 @@
   .animate-slideIn {
     animation: slideIn 0.3s ease-out;
   }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out;
+  }
 }
 
 @keyframes fadeIn {
@@ -73,11 +77,21 @@
   }
 }
 
-/* ⭐ NEW: Add this animation for hints sliding in from left */
 @keyframes slideIn {
   from {
     opacity: 0;
     transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
@@ -101,7 +115,6 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* Markdown Content Prose Styles */
 .markdown-content {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -133,7 +146,6 @@ button:focus-visible {
   margin: 0.25rem 0;
 }
 
-/* Custom prose color variants */
 .prose-green strong {
   color: #065f46;
 }

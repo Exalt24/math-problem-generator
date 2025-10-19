@@ -1,6 +1,3 @@
--- Add solution_steps column to math_problem_sessions
--- This stores the AI-generated step-by-step solution
-
 -- Add the column
 ALTER TABLE math_problem_sessions
 ADD COLUMN IF NOT EXISTS solution_steps TEXT;

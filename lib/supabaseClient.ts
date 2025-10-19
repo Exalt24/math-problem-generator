@@ -9,7 +9,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// ✅ Problem type categories from Singapore Primary 5 Math syllabus
 export type ProblemType = 
   | 'Whole Numbers'
   | 'Fractions'
@@ -37,7 +36,7 @@ export type Database = {
           difficulty: 'easy' | 'medium' | 'hard'
           solution_steps: string | null
           problem_type: ProblemType
-          hints: string[] | null // ⭐ NEW: Three progressive hints
+          hints: string[] | null
         }
         Insert: {
           id?: string
@@ -47,7 +46,7 @@ export type Database = {
           difficulty?: 'easy' | 'medium' | 'hard'
           solution_steps: string | null
           problem_type?: ProblemType
-          hints?: string[] | null // ⭐ NEW: Optional on insert
+          hints?: string[] | null
         }
         Update: {
           id?: string
@@ -57,7 +56,7 @@ export type Database = {
           difficulty?: 'easy' | 'medium' | 'hard'
           solution_steps?: string | null
           problem_type?: ProblemType
-          hints?: string[] | null // ⭐ NEW: Optional on update
+          hints?: string[] | null
         }
       }
       math_problem_submissions: {
@@ -68,7 +67,7 @@ export type Database = {
           is_correct: boolean
           feedback_text: string
           created_at: string
-          hints_used: number // ⭐ NEW: Number of hints used (0-3)
+          hints_used: number
         }
         Insert: {
           id?: string
@@ -77,7 +76,7 @@ export type Database = {
           is_correct: boolean
           feedback_text: string
           created_at?: string
-          hints_used?: number // ⭐ NEW: Optional (defaults to 0)
+          hints_used?: number
         }
         Update: {
           id?: string
@@ -86,31 +85,29 @@ export type Database = {
           is_correct?: boolean
           feedback_text?: string
           created_at?: string
-          hints_used?: number // ⭐ NEW: Optional in updates
+          hints_used?: number
         }
       }
     }
   }
 }
 
-// Type for joined submission data with session details
 export type SubmissionWithSession = {
   id: string
   user_answer: number
   is_correct: boolean
   created_at: string
-  hints_used: number // ⭐ NEW: Added hints used
+  hints_used: number
   math_problem_sessions: {
     problem_text: string
     correct_answer: number
     difficulty: 'easy' | 'medium' | 'hard'
     solution_steps: string | null
     problem_type: ProblemType
-    hints: string[] | null // ⭐ NEW: Added hints array
+    hints: string[] | null
   }
 }
 
-// Get recent submissions with problem details
 export async function getRecentSubmissions(limit: number = 10): Promise<SubmissionWithSession[]> {
   const { data, error } = await supabase
     .from('math_problem_submissions')
@@ -137,11 +134,9 @@ export async function getRecentSubmissions(limit: number = 10): Promise<Submissi
     return []
   }
 
-  // Type assertion needed due to Supabase join syntax
   return data as unknown as SubmissionWithSession[]
 }
 
-// Get submission statistics for score tracking
 export async function getSubmissionStats() {
   const { data, error } = await supabase
     .from('math_problem_submissions')
@@ -159,7 +154,6 @@ export async function getSubmissionStats() {
   return { total, correct, percentage }
 }
 
-// ✅ Get statistics grouped by problem type
 export async function getStatsByProblemType() {
   const { data, error } = await supabase
     .from('math_problem_submissions')
@@ -175,7 +169,6 @@ export async function getStatsByProblemType() {
     return []
   }
 
-  // Type for the joined data
   type SubmissionWithType = {
     is_correct: boolean
     math_problem_sessions: {
@@ -185,7 +178,6 @@ export async function getStatsByProblemType() {
 
   const typedData = data as unknown as SubmissionWithType[]
 
-  // Group by problem type
   const statsByType = typedData.reduce((acc, submission) => {
     if (!submission.math_problem_sessions) return acc
     
@@ -202,7 +194,6 @@ export async function getStatsByProblemType() {
     return acc
   }, {} as Record<ProblemType, { total: number; correct: number; percentage: number }>)
 
-  // Calculate percentages
   Object.keys(statsByType).forEach((type) => {
     const stats = statsByType[type as ProblemType]
     stats.percentage = stats.total > 0 
@@ -210,14 +201,12 @@ export async function getStatsByProblemType() {
       : 0
   })
 
-  // Convert to array format for easier rendering
   return Object.entries(statsByType).map(([type, stats]) => ({
     type: type as ProblemType,
     ...stats
   }))
 }
 
-// ✅ Get submissions filtered by problem type
 export async function getSubmissionsByType(
   problemType: ProblemType, 
   limit: number = 10
@@ -251,13 +240,12 @@ export async function getSubmissionsByType(
   return data as unknown as SubmissionWithSession[]
 }
 
-// ⭐ NEW: Get hint usage statistics
 export async function getHintStatistics() {
   const { data, error } = await supabase
     .from('math_problem_submissions')
     .select('hints_used, is_correct')
     .order('created_at', { ascending: false })
-    .limit(50) // Last 50 submissions
+    .limit(50)
 
   if (error) {
     console.error('Error fetching hint statistics:', error)
@@ -274,7 +262,6 @@ export async function getHintStatistics() {
   const totalHintsUsed = data.reduce((sum, s) => sum + s.hints_used, 0)
   const averageHints = totalHintsUsed / totalAttempts
 
-  // Breakdown by hint count
   const hintDistribution = {
     noHints: data.filter(s => s.hints_used === 0).length,
     oneHint: data.filter(s => s.hints_used === 1).length,
@@ -293,7 +280,6 @@ export async function getHintStatistics() {
   }
 }
 
-// ⭐ NEW: Get hint statistics by difficulty level
 export async function getHintStatsByDifficulty() {
   const { data, error } = await supabase
     .from('math_problem_submissions')
@@ -322,7 +308,6 @@ export async function getHintStatsByDifficulty() {
 
   const typedData = data as unknown as SubmissionWithDifficulty[]
 
-  // Group by difficulty
   const statsByDifficulty = typedData.reduce((acc, submission) => {
     if (!submission.math_problem_sessions) return acc
     
@@ -350,7 +335,6 @@ export async function getHintStatsByDifficulty() {
     solvedWithoutHints: number
   }>)
 
-  // Calculate averages
   Object.keys(statsByDifficulty).forEach((difficulty) => {
     const stats = statsByDifficulty[difficulty]
     stats.averageHints = stats.total > 0 

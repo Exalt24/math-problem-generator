@@ -1,16 +1,12 @@
--- Migration: Add Hints System
--- Date: October 18, 2025
--- Purpose: Add hints storage and tracking
-
--- 1. Add hints column to math_problem_sessions
+-- Add hints column to math_problem_sessions
 ALTER TABLE math_problem_sessions
 ADD COLUMN IF NOT EXISTS hints TEXT[] DEFAULT NULL;
 
--- 2. Add hints tracking to submissions
+-- Add hints tracking to submissions
 ALTER TABLE math_problem_submissions
 ADD COLUMN IF NOT EXISTS hints_used INTEGER DEFAULT 0;
 
--- 3. Verify columns were added
+-- Verify columns were added
 DO $$
 BEGIN
     IF EXISTS (

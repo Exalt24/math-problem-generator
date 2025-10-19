@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 interface SubmitRequest {
   sessionId: string;
   userAnswer: number;
-  hintsUsed: number; // ⭐ NEW: Number of hints the student used (0-3)
+  hintsUsed: number;
 }
 
 function isAnswerCorrect(userAnswer: number, correctAnswer: number): boolean {
@@ -18,9 +18,8 @@ async function generateFeedback(
   correctAnswer: number,
   userAnswer: number,
   isCorrect: boolean,
-  hintsUsed: number // ⭐ NEW: Include hints context in feedback
+  hintsUsed: number
 ): Promise<string> {
-  // ⭐ NEW: Add context about hint usage
   const hintContext = hintsUsed > 0
     ? `The student used ${hintsUsed} hint${hintsUsed > 1 ? 's' : ''} to help solve this problem.`
     : 'The student solved this problem independently without using any hints.';
@@ -82,7 +81,6 @@ export async function POST(request: NextRequest) {
   try {
     const body: SubmitRequest = await request.json();
 
-    // ⭐ UPDATED: Validate hintsUsed is provided
     if (!body.sessionId || body.userAnswer === undefined || body.hintsUsed === undefined) {
       return NextResponse.json(
         { error: 'Missing required fields: sessionId, userAnswer, or hintsUsed' },
@@ -90,7 +88,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate userAnswer
     if (typeof body.userAnswer !== 'number' || isNaN(body.userAnswer)) {
       return NextResponse.json(
         { error: 'userAnswer must be a valid number' },
@@ -98,7 +95,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ⭐ NEW: Validate hintsUsed
     if (typeof body.hintsUsed !== 'number' || body.hintsUsed < 0 || body.hintsUsed > 3) {
       return NextResponse.json(
         { error: 'hintsUsed must be a number between 0 and 3' },
@@ -122,7 +118,6 @@ export async function POST(request: NextRequest) {
 
     const isCorrect = isAnswerCorrect(body.userAnswer, session.correct_answer);
     
-    // ⭐ UPDATED: Pass hintsUsed to feedback generation
     const feedback = await generateFeedback(
       session.problem_text,
       session.correct_answer,
@@ -131,7 +126,6 @@ export async function POST(request: NextRequest) {
       body.hintsUsed
     );
 
-    // ⭐ UPDATED: Include hints_used in database insert
     const { error: insertError } = await supabase
       .from('math_problem_submissions')
       .insert({

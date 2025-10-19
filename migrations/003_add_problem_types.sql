@@ -1,7 +1,3 @@
--- Migration 003: Add Problem Types/Categories
--- Purpose: Track mathematical topic categories for better analytics and filtering
--- Date: 2025-10-18
-
 -- Display current state
 DO $$
 DECLARE 
