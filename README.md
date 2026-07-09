@@ -120,17 +120,11 @@
 
 ---
 
-## 🧪 Testing Credentials
+## 🧪 Testing Setup
 
-> **For assessment and testing purposes only**
+> **For assessment and testing purposes**
 
-```plaintext
-Supabase Project URL: https://jrqncyjyykychdjitvxy.supabase.co
-
-Supabase Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpycW5jeWp5eWt5Y2hkaml0dnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MjM1MzIsImV4cCI6MjA3NjI5OTUzMn0.4xVeUS2zq-08Z-I9qWCV1YXORa-iZXSW97YUjA4J1X4
-```
-
-⚠️ **Note:** These credentials enable read/write access to the demo database. In production, more restrictive RLS policies would be implemented.
+To run the app or the automated test scripts, copy `.env.local.example` to `.env.local` and fill in your own Supabase and Google Gemini credentials. The full walkthrough is in [Local Setup](#-local-setup) below.
 
 ---
 
@@ -216,7 +210,7 @@ npm run dev
 
 ### Automated API Testing
 
-Six comprehensive test scripts are provided in the `/tests` folder:
+Five comprehensive test scripts are provided in the `/tests` folder:
 
 #### **Quick Test: All Difficulties**
 ```bash
@@ -293,7 +287,7 @@ math-problem-generator/
 │
 ├── migrations/                       # 🔄 Database migrations
 │
-├── tests/                            # 🧪 API test scripts (6 files)
+├── tests/                            # 🧪 API test scripts (5 files)
 │   ├── test-all-difficulties.js
 │   ├── test-generate.js
 │   ├── test-submit.js
@@ -419,7 +413,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - ✅ **Hints System:** Progressive AI-generated hints
 - ✅ **Answer History:** Track all submissions
 - ✅ **Enhanced UX:** Confetti, animations, accessibility
-- ✅ **Comprehensive Testing:** 6 test scripts + manual QA
+- ✅ **Comprehensive Testing:** 5 test scripts + manual QA
 - ✅ **Database Migrations:** Systematic schema management
 
 </details>
