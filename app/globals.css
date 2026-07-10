@@ -1,32 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
-  }
- 
-  .animate-slide-up {
-    animation: slideUp 0.4s ease-out;
-  }
- 
-  .animate-bounce-in {
-    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
- 
-  .animate-scale-in {
-    animation: scaleIn 0.3s ease-out;
-  }
+@utility animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
 
-  /* ⭐ NEW: Add this for hints */
-  .animate-slideIn {
-    animation: slideIn 0.3s ease-out;
-  }
+@utility animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
 
-  .animate-slide-in-right {
-    animation: slideInRight 0.4s ease-out;
-  }
+@utility animate-bounce-in {
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@utility animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+@utility animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+@utility animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out;
 }
 
 @keyframes fadeIn {
