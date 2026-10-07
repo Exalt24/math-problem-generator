@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, type GenerativeModel } from '@google/generative-ai';
+import { GoogleGenerativeAI, type GenerateContentResult } from '@google/generative-ai';
 
 const apiKey = process.env.GOOGLE_API_KEY;
 
@@ -8,47 +8,69 @@ if (!apiKey) {
 
 export const genAI = new GoogleGenerativeAI(apiKey);
 
-// Last resort only. Google retires Gemini models on a schedule, so the
-// name is looked up at runtime instead of being pinned in code.
+// Last resort only. Google retires Gemini models on a schedule and the newest
+// one is sometimes overloaded, so names are looked up at runtime and a few of
+// the newest are tried in order instead of pinning one in code.
 const FALLBACK_MODEL = 'gemini-flash-latest';
+const MAX_CANDIDATES = 4;
 
 interface ListedModel {
   name: string;
   supportedGenerationMethods?: string[];
 }
 
-// Picks the newest stable "gemini-<version>-flash" model the key can call.
+// Stable "gemini-<version>-flash" models the key can call, newest first.
 // GEMINI_MODEL overrides the lookup when a specific model is wanted.
-async function resolveModelName(): Promise<string> {
-  if (process.env.GEMINI_MODEL) return process.env.GEMINI_MODEL;
+async function resolveModelNames(): Promise<string[]> {
+  if (process.env.GEMINI_MODEL) return [process.env.GEMINI_MODEL];
 
   try {
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=${apiKey}`
     );
-    if (!res.ok) return FALLBACK_MODEL;
+    if (!res.ok) return [FALLBACK_MODEL];
     const body = (await res.json()) as { models?: ListedModel[] };
 
-    const flash = (body.models ?? [])
+    const names = (body.models ?? [])
       .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
       .map((m) => {
         const match = m.name.match(/^models\/(gemini-(\d+(?:\.\d+)?)-flash)$/);
         return match ? { id: match[1], version: parseFloat(match[2]) } : null;
       })
       .filter((m): m is { id: string; version: number } => m !== null)
-      .sort((a, b) => b.version - a.version);
+      .sort((a, b) => b.version - a.version)
+      .slice(0, MAX_CANDIDATES)
+      .map((m) => m.id);
 
-    return flash[0]?.id ?? FALLBACK_MODEL;
+    return names.length ? names : [FALLBACK_MODEL];
   } catch {
-    return FALLBACK_MODEL;
+    return [FALLBACK_MODEL];
   }
 }
 
-let cached: Promise<GenerativeModel> | null = null;
+let cached: Promise<string[]> | null = null;
 
-export function getModel(): Promise<GenerativeModel> {
-  if (!cached) {
-    cached = resolveModelName().then((name) => genAI.getGenerativeModel({ model: name }));
-  }
+function candidates(): Promise<string[]> {
+  if (!cached) cached = resolveModelNames();
   return cached;
+}
+
+// An overloaded, missing or rate-limited model is worth skipping. Anything else
+// (a bad prompt, a bad key) will fail the same way on every model.
+function worthSkipping(error: unknown): boolean {
+  return /\b(503|429|404)\b|overloaded|high demand|not found|no longer available/i.test(String(error));
+}
+
+export async function generateContent(prompt: string): Promise<GenerateContentResult> {
+  const names = await candidates();
+  let lastError: unknown;
+  for (const name of names) {
+    try {
+      return await genAI.getGenerativeModel({ model: name }).generateContent(prompt);
+    } catch (error) {
+      lastError = error;
+      if (!worthSkipping(error)) throw error;
+    }
+  }
+  throw lastError;
 }

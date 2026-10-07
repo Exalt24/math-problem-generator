@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getModel } from '@/lib/gemini';
+import { generateContent } from '@/lib/gemini';
 import { supabase } from '@/lib/supabaseClient';
 
 interface SubmitRequest {
@@ -73,7 +73,7 @@ Example (all hints used): "Nice try! You used all the hints - that shows great p
 
 Generate feedback now (use **bold** for emphasis):`.trim();
 
-  const result = await (await getModel()).generateContent(prompt);
+  const result = await generateContent(prompt);
   return result.response.text().trim();
 }
 

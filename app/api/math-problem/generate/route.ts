@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getModel } from '@/lib/gemini';
+import { generateContent } from '@/lib/gemini';
 import { supabase, type ProblemType } from '@/lib/supabaseClient';
 
 interface GeneratedProblem {
@@ -182,8 +182,7 @@ Return ONLY a JSON object with this EXACT structure (no markdown, no code blocks
 
 Generate a NEW, DIFFERENT problem with FULL SOLUTION, CATEGORY, and THREE PROGRESSIVE HINTS at ${difficulty.toUpperCase()} difficulty now:`;
 
-  const model = await getModel();
-  const result = await model.generateContent(prompt);
+  const result = await generateContent(prompt);
   const responseText = result.response.text();
   const cleanedText = cleanAIResponse(responseText);
   
