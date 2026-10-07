@@ -12,7 +12,7 @@ export const genAI = new GoogleGenerativeAI(apiKey);
 // one is sometimes overloaded, so names are looked up at runtime and a few of
 // the newest are tried in order instead of pinning one in code.
 const FALLBACK_MODEL = 'gemini-flash-latest';
-const MAX_CANDIDATES = 4;
+const MAX_CANDIDATES = 5;
 
 interface ListedModel {
   name: string;
@@ -35,11 +35,11 @@ async function resolveModelNames(): Promise<string[]> {
     const names = (body.models ?? [])
       .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
       .map((m) => {
-        const match = m.name.match(/^models\/(gemini-(\d+(?:\.\d+)?)-flash)$/);
-        return match ? { id: match[1], version: parseFloat(match[2]) } : null;
+        const match = m.name.match(/^models\/(gemini-(\d+(?:\.\d+)?)-flash(-lite)?)$/);
+        return match ? { id: match[1], version: parseFloat(match[2]), lite: Boolean(match[3]) } : null;
       })
-      .filter((m): m is { id: string; version: number } => m !== null)
-      .sort((a, b) => b.version - a.version)
+      .filter((m): m is { id: string; version: number; lite: boolean } => m !== null)
+      .sort((a, b) => b.version - a.version || Number(a.lite) - Number(b.lite))
       .slice(0, MAX_CANDIDATES)
       .map((m) => m.id);
 
@@ -82,6 +82,7 @@ export async function generateContent(prompt: string): Promise<GenerateContentRe
       return await withDeadline(genAI.getGenerativeModel({ model: name }).generateContent(prompt), name);
     } catch (error) {
       lastError = error;
+      console.warn(`Gemini model ${name} skipped: ${String(error).slice(0, 160)}`);
       if (!worthSkipping(error)) throw error;
     }
   }
