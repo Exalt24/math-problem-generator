@@ -26,7 +26,8 @@ async function resolveModelNames(): Promise<string[]> {
 
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=${apiKey}`
+      `https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=${apiKey}`,
+      { signal: AbortSignal.timeout(8000) }
     );
     if (!res.ok) return [FALLBACK_MODEL];
     const body = (await res.json()) as { models?: ListedModel[] };
@@ -61,12 +62,24 @@ function worthSkipping(error: unknown): boolean {
   return /\b(503|429|404)\b|overloaded|high demand|not found|no longer available/i.test(String(error));
 }
 
+// A model that is overloaded can also just hang, so each attempt gets a deadline
+// and a slow model counts as an overloaded one.
+const ATTEMPT_TIMEOUT_MS = 15000;
+
+function withDeadline<T>(work: Promise<T>, name: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout>;
+  const deadline = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`503 ${name} did not answer in time`)), ATTEMPT_TIMEOUT_MS);
+  });
+  return Promise.race([work, deadline]).finally(() => clearTimeout(timer));
+}
+
 export async function generateContent(prompt: string): Promise<GenerateContentResult> {
   const names = await candidates();
   let lastError: unknown;
   for (const name of names) {
     try {
-      return await genAI.getGenerativeModel({ model: name }).generateContent(prompt);
+      return await withDeadline(genAI.getGenerativeModel({ model: name }).generateContent(prompt), name);
     } catch (error) {
       lastError = error;
       if (!worthSkipping(error)) throw error;

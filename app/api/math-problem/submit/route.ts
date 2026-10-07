@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateContent } from '@/lib/gemini';
 import { supabase } from '@/lib/supabaseClient';
 
+export const maxDuration = 90;
+
 interface SubmitRequest {
   sessionId: string;
   userAnswer: number;

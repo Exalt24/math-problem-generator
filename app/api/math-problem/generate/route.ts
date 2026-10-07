@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateContent } from '@/lib/gemini';
 import { supabase, type ProblemType } from '@/lib/supabaseClient';
 
+export const maxDuration = 90;
+
 interface GeneratedProblem {
   problem_text: string;
   correct_answer: number;
