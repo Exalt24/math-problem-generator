@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td><strong>Backend</strong></td>
-<td>Next.js API Routes • Google Gemini AI (<code>gemini-2.0-flash-exp</code>)</td>
+<td>Next.js API Routes • Google Gemini AI (the model name is looked up at runtime, with <code>gemini-flash-latest</code> as the fallback)</td>
 </tr>
 <tr>
 <td><strong>Database</strong></td>
@@ -109,7 +109,7 @@
 </tr>
 <tr>
 <td><strong>Deployment</strong></td>
-<td>Vercel (Edge Runtime)</td>
+<td>Vercel</td>
 </tr>
 <tr>
 <td><strong>Testing</strong></td>
@@ -341,7 +341,7 @@ math-problem-generator/
 | Project | Key Achievements | Relevance to This Project |
 |---------|------------------|---------------------------|
 | **RataTutor** | AI-powered study assistant with context management, multi-format file processing, flashcard/quiz generation | Direct AI integration experience, educational technology focus |
-| **Blockchain Explorer** | Real-time analytics dashboard, 42+ automated tests, 8-10x cache optimization | Production-quality error handling, comprehensive testing, performance optimization |
+| **Blockchain Event Indexer** | Event indexer and analytics dashboard for its own contract, with a per-query in-memory cache | Error handling, tests, caching |
 | **ChatGenie** | Built complete full-stack applications in 3-day cycles (Vue.js + Ruby on Rails) | Rapid full-stack delivery under time pressure while maintaining quality |
 
 **Skills Demonstrated in This Project:**
@@ -375,7 +375,6 @@ math-problem-generator/
 ### Performance Optimizations
 - **Lazy Loading:** Components load on-demand
 - **Optimistic UI:** Instant feedback before API confirmation
-- **Edge Runtime:** Fast response times via Vercel Edge
 
 ---
 
