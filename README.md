@@ -9,7 +9,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.18-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-### **[🚀 View Live Application →](https://math-problem-generator-one.vercel.app/)**
+**The hosted copy cannot save problems: its Supabase project no longer exists, so it was left out of the links. Run it locally against a local Supabase (`supabase start`) as described below.**
 
 </div>
 
@@ -320,7 +320,7 @@ math-problem-generator/
 
 ### Deployment URL
 
-**Production:** https://math-problem-generator-one.vercel.app/
+**Production:** none at the moment (see the note at the top).
 
 ---
 
