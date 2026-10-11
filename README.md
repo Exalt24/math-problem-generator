@@ -22,7 +22,7 @@
 <td width="50%">
 
 ### 🤖 **AI-Powered Generation**
-- Google Gemini 2.0 Flash generates unique problems
+- Google Gemini (the newest stable Flash model the key can call, looked up at runtime) generates unique problems
 - Personalized, encouraging feedback
 - Singapore Math syllabus aligned
 - Context-aware problem generation
